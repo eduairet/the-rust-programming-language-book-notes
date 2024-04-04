@@ -32,3 +32,33 @@
   ```SHELL
   rustup doc
   ```
+
+### Compiling and Running a Rust Program
+
+- Create a new file with the `.rs` extension, for example, `main.rs`
+- Write the code [^1]
+  ```RUST
+  // First we define the main function, rust scopes are defined by curly braces
+  fn main() {
+      println!("Hello, world!"); // This line prints the text "Hello, world!" to the console using the println! macro
+      // Notice that the line ends with a semicolon (;), this is how we end expressions in Rust and it's mandatory
+  }
+  ```
+  - `main()` is the very first function that runs in every Rust program
+
+[^1]: If you need to format the code, you can use the `rustfmt` tool `rustfmt main.rs` or your favorite editor extension
+
+- Compile the program with:
+  ```SHELL
+  rustc main.rs
+  ```
+  - This will generate an executable file named `main`
+- Run the program with:
+  ```SHELL
+  ./main
+  ```
+  - This file can be run on any system without the need for Rust to be installed
+- You should see the output:
+  ```SHELL
+  Hello, world!
+  ```
