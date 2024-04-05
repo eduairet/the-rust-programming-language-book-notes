@@ -62,3 +62,67 @@
   ```SHELL
   Hello, world!
   ```
+
+# Cargo
+
+- Cargo is the Rust package manager and build system
+- It's the recommended way to manage your Rust projects
+- Cargo comes with rustup, check the installation with:
+  ```SHELL
+  cargo --version
+  # cargo 1.77.1 (e52e36006 2024-03-26)
+  ```
+- Create a project with cargo:
+
+  ```SHELL
+  cargo new hello_cargo
+  cd hello_cargo
+  ```
+
+  - This will create a new directory named `hello_cargo` with the following structure:
+    ```SHELL
+    hello_cargo
+    ├── Cargo.toml
+    └── src
+        └── main.rs
+    ```
+  - `Cargo.toml` is the manifest file that describes the project and its dependencies
+
+    ```TOML
+    [package]
+    name = "hello_cargo"
+    version = "0.1.0"
+    edition = "2021"
+
+    # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+    [dependencies]
+    ```
+
+  - The `src` directory is where the source code files are stored
+    - `src/main.rs` is the main file of the project
+  - If the project is not a `git` repository it will be initialized automatically
+    - Explicitly initialize with or without a git repository using `cargo new hello_cargo --vcs git` or `cargo new hello_cargo --vcs none`
+
+- Build the project with:
+  ```SHELL
+  cargo build
+  ```
+  - This will create a `target` directory with the compiled files, try running the executable with:
+    ```SHELL
+    ./target/debug/hello_cargo
+    ```
+- A better way to run the project is with:
+  ```SHELL
+  cargo run
+  ```
+  - This will compile and run the project in one step, if the project didn't change, it will only run the executable
+- There's also a `check` command that only checks the project without building it, this is useful to check for errors without waiting for the build process
+  ```SHELL
+  cargo check
+  ```
+- To build the project for release, use:
+  ```SHELL
+  cargo build --release
+  ```
+  - This will create an optimized executable in the `target/release` directory
