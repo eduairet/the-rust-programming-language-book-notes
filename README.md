@@ -10,4 +10,4 @@ Eduardo Aire's notes about The Rust Programming Language book
 
 ## Resources
 
-1. [Official documentation](https://www.rust-lang.org/learn)s
+1. [Official documentation](https://www.rust-lang.org/learn)
