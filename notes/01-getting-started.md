@@ -1,6 +1,6 @@
-## Getting Started
+# Getting Started
 
-### Installing Rust
+## Installing Rust
 
 - First [install rustup](https://www.rust-lang.org/learn/get-started), a toolchain manager for Rust
   ```SHELL
@@ -33,7 +33,7 @@
   rustup doc
   ```
 
-### Compiling and Running a Rust Program
+## Compiling and Running a Rust Program
 
 - Create a new file with the `.rs` extension, for example, `main.rs`
 - Write the code [^1]
@@ -63,7 +63,7 @@
   Hello, world!
   ```
 
-# Cargo
+## Cargo
 
 - Cargo is the Rust package manager and build system
 - It's the recommended way to manage your Rust projects
@@ -99,6 +99,17 @@
     [dependencies]
     ```
 
+    - If you need to add dependencies, you can add them to the `[dependencies]` section or use the `cargo add` command
+      ```SHELL
+      cargo add <dependency>
+      ```
+    - Notice that cargo uses Semantic Versioning, so the version number is divided into three parts: `MAJOR.MINOR.PATCH`
+    - If you need to check the documentation of a crate, you can use:
+      ```SHELL
+      cargo doc --open
+      ```
+    - This will generate the documentation for the project and its crates and open it in the browser
+
   - The `src` directory is where the source code files are stored
     - `src/main.rs` is the main file of the project
   - If the project is not a `git` repository it will be initialized automatically
@@ -126,3 +137,36 @@
   cargo build --release
   ```
   - This will create an optimized executable in the `target/release` directory
+
+## Syntax introduction
+
+- Rust is a statically typed language, meaning that it must know the types of all variables at compile time
+- Variables are immutable by default, to make them mutable use the `mut` keyword
+- Rust uses snake case for variable and function names
+- The `::` syntax in Rust is used for both associated functions and namespaces
+- Comments are created with `//` for single-line comments and `/* */` for multi-line comments
+- Macros are called with `!` at the end of the name
+- The `&` symbol is used to create references, which allow you to refer to some value without taking ownership of it, this is called borrowing
+- Code example:
+
+  ```RUST
+  use std::io; // Bring the io library into scope
+
+  // fn is the keyword to declare a function
+  fn main() {
+      println!("Guess the number!"); // Print a message to the console with the println! macro
+      println!("Please input your guess.");
+
+      let mut guess = String::new(); // Create a mutable variable named guess and bind it to a new, empty instance of a String
+
+      // We can also use std::io::stdin() instead of io::stdin() if we don't want to bring the io library into scope
+      io::stdin()
+          .read_line(&mut guess)
+          .expect("Failed to read line");
+      // Read a line from the standard input and bind it to the guess variable, the .expect() method is called on the Result type returned by read_line to handle any errors
+
+      let guess: u32 = guess.trim().parse().expect("Please type a number!"); // Parse the string into a number, shadowing the previous value of guess
+
+      println!("You guessed: {guess}"); // Print the value of the guess variable to the console using a placeholder {}
+  }
+  ```
