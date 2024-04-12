@@ -67,4 +67,18 @@ fn main() {
 
     let scalar_boolean: bool = true;
     let scalar_character: char = 'a';
+
+    // Compound types
+
+    // Tuple
+    let tuple: (i32, f64, u8) = (500, 6.4, 1);
+    let (x, y, z) = tuple; // Destructuring
+    println!("The value of y is: {}", y);
+    println!("The value of tuple.0 is: {}", tuple.0);
+
+    // Array
+    let array: [i32; 5] = [1, 2, 3, 4, 5];
+    let first = array[0];
+    let second = array[1];
+    // let error = array[10]; // This will cause a panic
 }
