@@ -81,4 +81,12 @@ fn main() {
     let first = array[0];
     let second = array[1];
     // let error = array[10]; // This will cause a panic
+
+    // Functions
+    println!(some_function());
+}
+
+// Functions
+fn some_function() {
+    return "returned";
 }

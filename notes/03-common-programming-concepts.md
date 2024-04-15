@@ -141,6 +141,23 @@
   */
   ```
 
+### Functions
+
+- The `main` function is the entry point of many programs
+- Functions are declared with the `fn` keyword
+- Function naming convention is snake case `snake_case`
+- They should be after the `main` function
+
+```Rust
+fn main() {
+    println!("Hello, world!");
+}
+
+fn another_function() {
+    println!("Another function.");
+}
+```
+
 ## Appendix
 
 - Reserved keywords: [Rust Reference](https://doc.rust-lang.org/reference/keywords.html)
