@@ -1,24 +1,22 @@
 fn main() {
     let x = 5;
     println!("The value of x is: {}", x);
-    /*
     // If we try to change the value of x, we will get a compile-time error
-    x = 6;
-    ```
-    3 |     println!("The value of x is: {}", x);
-    4 |     x = 6;
-      |     ^^^^^ cannot assign twice to immutable variable
-    ```
-    */
+    // x = 6;
+    // ```
+    // 3 |     println!("The value of x is: {}", x);
+    // 4 |     x = 6;
+    //   |     ^^^^^ cannot assign twice to immutable variable
+    // ```
+
     let mut y = 10;
     println!("The value of y is: {}", y);
     y = 6;
     println!("The value of y is: {}", y);
-    /*
-    Here we can see that we can change the value of y because it is mutable.
-    The value of y is: 5
-    The value of y is: 6
-    */
+    // Here we can see that we can change the value of y because it is mutable.
+    // The value of y is: 5
+    // The value of y is: 6
+
     const LANGUAGE: &str = "Rust";
     const DAYS_OF_TWO_WEEKS: u32 = 7 * 2; // Constants can be assigned expressions
 
@@ -83,10 +81,36 @@ fn main() {
     // let error = array[10]; // This will cause a panic
 
     // Functions
-    println!(some_function());
+    some_function();
+    function_with_parameters(5, 10);
+
+    // Statements and expressions
+    let x = 5; // Statement
+
+    // let x = (let y = 6);
+    // You can't assign a statement to a variable
+    // you'll get a compile-time error
+
+    let y = {
+        let x = 3;
+        // Expression
+        x + 1
+    };
+    println!("The value of y is: {}", y);
+
+    let z = five();
+    println!("The value of z is: {}", z);
 }
 
 // Functions
 fn some_function() {
-    return "returned";
+    println!("returned");
+}
+
+fn function_with_parameters(x: i32, y: i32) {
+    println!("The coord is: (x = {x}, y = {y})");
+}
+
+fn five() -> i32 {
+    5
 }

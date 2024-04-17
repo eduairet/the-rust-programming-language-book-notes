@@ -144,7 +144,7 @@
 - Variables are immutable by default, to make them mutable use the `mut` keyword
 - Rust uses snake case for variable and function names
 - The `::` syntax in Rust is used for both associated functions and namespaces
-- Comments are created with `//` for single-line comments and `/* */` for multi-line comments
+- Comments start with `//`, multiple line comments need the slashes at every new line, and `/* */` is used for documentation comments
 - Macros are called with `!` at the end of the name
 - The `&` symbol is used to create references, which allow you to refer to some value without taking ownership of it, this is called borrowing
 - Code example:

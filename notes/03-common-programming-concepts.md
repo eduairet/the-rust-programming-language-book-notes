@@ -136,27 +136,81 @@
   let first = array[0];
   let second = array[1];
   let error = array[10]; // This will cause a panic
-  /*
-  index out of bounds: the length is 5 but the index is 10
-  */
+  // index out of bounds: the length is 5 but the index is 10
   ```
 
-### Functions
+## Functions
 
 - The `main` function is the entry point of many programs
 - Functions are declared with the `fn` keyword
 - Function naming convention is snake case `snake_case`
 - They should be after the `main` function
+- If you're using parameters, you must declare the type of each parameter
 
 ```Rust
 fn main() {
     println!("Hello, world!");
+    another_function(); // Function call
+    function_with_parameters(5, 10); // Function call with parameters
 }
 
 fn another_function() {
     println!("Another function.");
 }
+
+fn function_with_parameters(x: i32, y: i32) {
+    println!("The value of x is: {}", x);
+    println!("The value of y is: {}", y);
+}
 ```
+
+### Statements and Expressions
+
+- Rust is an expression-based language
+- **Expressions** return a value
+
+  - Calling a function or macro is an expression
+  - Blocks of code evaluate to the last expression in them
+  - Expressions do not include ending semicolons, if you add a semicolon, it becomes a statement
+
+    ```Rust
+    let y = {
+      let x = 3;
+      // Expression
+      x + 1
+    };
+    println!("The value of y is: {}", y); // 4
+    ```
+
+- **Statements** are instructions that perform some action and do not return a value
+
+  - Variable definitions are statements
+  - Since declarations are statements, you can't assign a `let` statement to another variable
+
+    ```Rust
+    let y = 6; // Statement
+    let x = (let y = 6); // Error
+    // In other languages, this would be an expression
+    // let x = y = 6;
+    ```
+
+### Function with return value
+
+- You can return a value from a function by specifying the return type after an arrow `->`
+- The return value of the function is the last expression in the block of the function body
+- You can return early from a function by using the `return` keyword and specifying a value
+- Most functions return `()` if you omit the return type
+- Most functions return the last expression implicitly
+
+  ```Rust
+  fn five() -> i32 {
+      5
+  } // Implicit return, adding a semicolon would make it a statement and cause an error
+  ```
+
+## Control Flow
+
+
 
 ## Appendix
 
