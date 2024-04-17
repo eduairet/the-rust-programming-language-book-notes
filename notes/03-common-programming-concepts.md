@@ -210,7 +210,124 @@ fn function_with_parameters(x: i32, y: i32) {
 
 ## Control Flow
 
+- Rust has three main categories of control flow:
 
+  - `if` expressions
+
+    ```Rust
+    // If expression
+    let number = 3;
+    if number < 5 {
+        println!("Condition was true");
+    } else {
+        println!("Condition was false");
+    }
+    ```
+
+    - You need to use a boolean expression in the `if` statement
+
+      ```Rust
+      // Boolean expression
+      let number = 3;
+      if number {
+          println!("Number is 3");
+      } // Error
+      ```
+
+    - You can use `else if` to add more conditions
+
+      ```Rust
+      // Else if
+      let number = 6;
+      if number % 4 == 0 {
+          println!("Number is divisible by 4");
+      } else if number % 3 == 0 {
+          println!("Number is divisible by 3");
+      } else if number % 2 == 0 {
+          println!("Number is divisible by 2");
+      } else {
+          println!("Number is not divisible by 4, 3, or 2");
+      }
+      ```
+
+      - In rust is not recommended to use `else if` chains when you have more than 4 conditions because it can be hard to read, in this case, you should use a `match` expression
+
+    - You can use `if` in a `let` statement
+
+      ```Rust
+      // If in a let statement
+      let condition = true;
+      let number = if condition { 5 } else { 6 };
+      println!("The value of number is: {}", number);
+      ```
+
+      - The type of the `if` and `else` expressions must be the same
+
+  - `loop` expressions
+
+    ```Rust
+    // Loop expression
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            break counter * 2; // It will run forever if we don't break
+        }
+    };
+    println!("The result is {}", result);
+    ```
+
+    - When we nest loops, we can use `break` with a label to specify which loop to break
+
+      ```Rust
+      // Loop with a label
+      'outer: loop {
+          println!("Entered the outer loop");
+          loop {
+              println!("Entered the inner loop");
+              break 'outer; // Breaks the outer loop
+          }
+          println!("This point will never be reached");
+      }
+      ```
+
+    - We can use `continue` to skip the rest of the iteration and start a new one
+
+      ```Rust
+      // Continue
+      for number in 1..=10 {
+          if number % 2 == 0 {
+              continue;
+          }
+          println!("The number is: {}", number);
+      }
+      ```
+
+  - `while` expressions
+
+    ```Rust
+    // While expression
+    let mut number = 3;
+    while number != 0 {
+        println!("{}!", number);
+        number -= 1;
+    }
+    println!("LIFTOFF!!!");
+    ```
+
+  - `for` expressions
+
+    ```Rust
+    // For expression
+    let a = [10, 20, 30, 40, 50];
+    for element in a {
+        println!("the value is: {}", element);
+    }
+    // With a range
+    for number in (1..4).rev() {
+        println!("{}", number);
+    } // 3, 2, 1
+    ```
 
 ## Appendix
 

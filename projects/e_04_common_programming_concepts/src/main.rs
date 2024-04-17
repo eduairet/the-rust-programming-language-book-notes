@@ -100,6 +100,62 @@ fn main() {
 
     let z = five();
     println!("The value of z is: {}", z);
+
+    // Control flow
+
+    // If
+    let number = 3;
+    if number < 5 {
+        println!("The number is less than 5"); // This will be printed
+    } else if number == 5 {
+        println!("The number is equal to 5");
+    } else {
+        println!("The number is greater than or equal to 5");
+    }
+
+    // If in a let statement
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+    println!("The value of number is: {}", number);
+
+    // Loops
+
+    // Loop
+    let mut counter = 0;
+    let result = loop {
+        counter += 1;
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+    println!("The value of result is: {}", result);
+
+    'outer: loop {
+        println!("Entered the outer loop");
+        loop {
+            println!("Entered the inner loop");
+            break 'outer; // Breaks the outer loop
+        }
+        println!("This point will never be reached");
+    }
+    println!("Exited the outer loop");
+
+    // While
+    let mut number = 3;
+    while number != 0 {
+        println!("{}!", number);
+        number -= 1;
+    }
+
+    // For
+    let array = [10, 20, 30, 40, 50];
+    for element in array {
+        println!("The value of element is: {}", element);
+    }
+
+    for number in (1..4).rev() {
+        println!("{}", number);
+    }
 }
 
 // Functions
