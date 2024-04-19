@@ -74,3 +74,71 @@
   - All the floating point types, such as `f64`.
   - The character type, `char`.
   - Tuples, if they only contain types that also implement `Copy`.
+
+## Ownership and Functions
+
+- Passing a variable to a function will move or copy, just like in an assignment.
+
+  ```Rust
+  fn main() {
+      let s = String::from("hello");
+      takes_ownership(s);
+      // println!("{}", s); // Error: value borrowed here after move
+
+      let x = 5;
+      makes_copy(x);
+      println!("{}", x);
+  }
+  fn takes_ownership(some_string: String) {
+      println!("{}", some_string);
+  }
+
+  fn makes_copy(some_integer: i32) {
+      println!("{}", some_integer);
+  }
+  ```
+
+## Return Values and Scope
+
+- Returning values can also transfer ownership.
+
+  ```Rust
+  fn main() {
+      let s1 = String::from("hello");
+      let (s2, len) = calculate_length(s1); // the function returns a tuple, so it transfers ownership
+      println!("The length of '{}' is {}", s2, len);
+
+      let s3 = gives_ownership(); // the function returns a value, so it transfers ownership
+      let s4 = String::from("hello");
+      let s5 = takes_and_gives_back(s4);
+      // println!("{}", s4); // Error: value borrowed here after move
+  }
+
+  fn calculate_length(s: String) -> (String, usize) {
+      let length = s.len();
+      (s, length)
+  }
+
+  fn gives_ownership() -> String {
+      let s = String::from("hello");
+      s
+  }
+
+  fn takes_and_gives_back(s: String) -> String {
+      s
+  }
+  ```
+
+- If a return value is allocated on the heap, the ownership is transferred to the calling function unless the value is moved to another variable.
+- If we need to return multiple values, we can use a tuple to return them all at once.
+
+  ```Rust
+  fn main() {
+      let (s1, s2) = tupple_return();
+      println!("{}, {}", s1, s2);
+  }
+
+  fn tupple_return() -> (String, String) {
+      (String::from("hello"), String::from("world"))
+  }
+  ```
