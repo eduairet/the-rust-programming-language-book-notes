@@ -142,3 +142,74 @@
       (String::from("hello"), String::from("world"))
   }
   ```
+
+## References and Borrowing
+
+- We can pass a reference to a variable to a function instead of transferring ownership, which is called borrowing.
+
+  ```Rust
+  fn main() {
+      let s1 = String::from("hello");
+      let len = calculate_length(&s1); // the function takes a reference, so it borrows the value
+      println!("The length of '{}' is {}", s1, len);
+  }
+
+  fn calculate_length(s: &String) -> usize {
+      s.len()
+  }
+  ```
+
+- Dereferencing a reference is done with the `*` operator.
+- References are immutable by default, but we can make them mutable by using `&mut`.
+
+  ```Rust
+  fn main() {
+      let mut s = String::from("hello");
+      change(&mut s); // Without the mut keyword, we would get an error
+      println!("{}", s);
+  }
+
+  fn change(s: &mut String) {
+      s.push_str(", world!");
+  }
+  ```
+
+- We can have only one mutable reference to a variable in a scope
+- We can have multiple immutable references to a variable in a scope
+- We can't have a mutable reference and an immutable reference to a variable in a scope
+
+  ```Rust
+  let mut s = String::from("hello");
+  let r1 = &s;
+  let r2 = &s;
+  let r3 = &mut s; // Error: cannot borrow `s` as mutable because it is also borrowed as immutable
+
+  println!("{}, {}, and {}", r1, r2, r3);
+
+  let mut s = String::from("hello");
+  let r1 = &mut s;
+  let r2 = &mut s; // Error: cannot borrow `s` as mutable more than once at a time
+  ```
+
+  - If the reference is dropped before the mutable reference, we can create a new mutable reference.
+
+    ```Rust
+    let mut s = String::from("hello");
+    let r1 = &s;
+    println!("{}", r1); // r1 goes out of scope here
+
+    let r2 = &mut s; // no problem
+    ```
+
+- This behavior prevents a data race (two or more pointers accessing the same data at the same time) at compile time.
+- With scope we can control the lifetime of references.
+
+  ```Rust
+  let mut s = String::from("hello");
+
+  {
+      let r1 = &mut s;
+  } // r1 goes out of scope here, so we can make a new reference with no problems
+
+  let r2 = &mut s;
+  ```

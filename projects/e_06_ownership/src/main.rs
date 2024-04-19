@@ -40,6 +40,18 @@ fn main() {
     let s2 = String::from("hello");
     let s3 = takes_and_gives_back(s2);
     // println!("{}", s2); // Error: value borrowed here after move
+
+    // References and Borrowing
+    let s1 = String::from("hello");
+    let len = calculate_length(&s1);
+    println!("The length of '{}' is {}.", s1, len); // s1 is still valid
+
+    let mut s = String::from("hello");
+    let r1 = &s;
+    println!("{}", r1); // r1 goes out of scope here
+
+    let r2 = &mut s; // no problem
+    println!("{}", r2);
 }
 
 fn takes_ownership(some_string: String) {
@@ -57,4 +69,8 @@ fn gives_ownership() -> String {
 
 fn takes_and_gives_back(a_string: String) -> String {
     a_string
+}
+
+fn calculate_length(s: &String) -> usize {
+    s.len()
 }
