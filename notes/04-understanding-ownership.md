@@ -213,3 +213,22 @@
 
   let r2 = &mut s;
   ```
+
+## Dangling References
+
+- Rust prevents dangling references by enforcing the borrowing rules at compile time.
+  - A dangling reference is a pointer that references a location in memory that may have been given to someone else, so the data is invalid.
+
+```Rust
+fn main() {
+    let reference_to_nothing = dangle();
+}
+
+fn dangle() -> &String {
+    let s = String::from("hello");
+    &s // Returns a reference to the String, but the String is dropped at the end of the function
+    // we should return the String itself s
+}
+```
+
+- The `s` variable goes out of scope at the end of the function, so the reference is invalid.
