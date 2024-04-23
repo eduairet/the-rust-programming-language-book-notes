@@ -232,3 +232,120 @@ fn dangle() -> &String {
 ```
 
 - The `s` variable goes out of scope at the end of the function, so the reference is invalid.
+
+## The Slice Type
+
+- Slices allow us to reference a contiguous sequence of elements in a collection rather than the whole collection.
+- Slices don't have ownership since they are references.
+
+  ```Rust
+  fn main() {
+    let mut s = String::from("hello world");
+    let word = first_word(&s); // word will get the value 5
+    s.clear(); // s = ""
+    println!("The first word length is: {}", word); // The first word is: 5
+  }
+
+  fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes(); // Convert the string to an array of bytes
+
+    // Iterating over the bytes of the string
+    for (i, &item) in bytes.iter().enumerate() {
+      if item == b' ' {
+        return i; // Return the index of the first space
+      }
+    }
+
+    s.len() // Return the length of the string if there is no space
+  }
+  ```
+
+  - When working with strings, it's better to use slices instead of indexes to avoid runtime errors.
+
+    ```Rust
+      // String Slices
+    let s = String::from("hello world");
+    let hello = &s[0..5]; // [start..end] - end is exclusive
+    let world = &s[6..11];
+    println!("{} {}", hello, world);
+
+    let hello = &s[..5]; // start is 0
+    let world = &s[6..]; // end is the length of the string
+    println!("{} {}", hello, world);
+
+    let s = "hello world";
+    let hello = &s[..]; // start is 0 and end is the length of the string
+    println!("{}", hello);
+
+    // Improved first_word function
+    fn first_word(s: &String) -> &str {
+      let bytes = s.as_bytes();
+
+      for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+          return &s[..i];
+        }
+      }
+
+      &s[..]
+    }
+    ```
+
+    - A better approach that can accept both `&String` and `&str` is to use the `&str` type.
+
+      ```Rust
+      fn main() {
+        let my_string = String::from("hello world");
+
+        // `first_word` works on slices of `String`s, whether partial
+        // or whole.
+        let word = first_word(&my_string[0..6]);
+        let word = first_word(&my_string[..]);
+        // `first_word` also works on references to `String`s, which
+        // are equivalent to whole slices of `String`s.
+        let word = first_word(&my_string);
+
+        let my_string_literal = "hello world";
+
+        // `first_word` works on slices of string literals,
+        // whether partial or whole.
+        let word = first_word(&my_string_literal[0..6]);
+        let word = first_word(&my_string_literal[..]);
+
+        // Because string literals *are* string slices already,
+        // this works too, without the slice syntax!
+        let word = first_word(my_string_literal);
+      }
+
+      fn first_word(s: &str) -> &str { // This function can accept both &String and &str
+        let bytes = s.as_bytes();
+
+        for (i, &item) in bytes.iter().enumerate() {
+          if item == b' ' {
+            return &s[..i];
+          }
+        }
+
+        &s[..]
+      }
+      ```
+
+- We should be careful when using slices because the reference to the slice is invalidated if the original variable is modified.
+
+  ```Rust
+  fn main() {
+    let mut s = String::from("hello world");
+    let word = first_word(&s); // “immutable borrow occurs here”
+    s.clear(); // Error: mutable borrow occurs here
+    println!("The first word is: {}", word);
+  }
+  ```
+
+## Other Slice Types
+
+- We can use the slice syntax to create slices of other types that implement the `Copy` trait.
+
+  ```Rust
+  let a = [1, 2, 3, 4, 5];
+  let slice = &a[1..3]; // slice: &[i32]
+  ```

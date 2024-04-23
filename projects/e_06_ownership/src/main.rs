@@ -52,6 +52,31 @@ fn main() {
 
     let r2 = &mut s; // no problem
     println!("{}", r2);
+
+    // The Slice Type
+    let mut s = String::from("hello world");
+    let word = first_word(&s); // word will get the value hello
+                               //s.clear(); // this will cause an error
+    println!("The first word is: {}", word); // The first word is hello
+
+    // String Slices
+    let s = String::from("hello world");
+    let hello = &s[0..5];
+    let world = &s[6..11];
+    println!("{} {}", hello, world);
+
+    let hello = &s[..5]; // start is 0
+    let world = &s[6..]; // end is the length of the string
+    println!("{} {}", hello, world);
+
+    let s = "hello world";
+    let hello = &s[..]; // start is 0 and end is the length of the string
+    println!("{}", hello);
+
+    // Other Slices
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3];
+    println!("{:?}", slice);
 }
 
 fn takes_ownership(some_string: String) {
@@ -73,4 +98,26 @@ fn takes_and_gives_back(a_string: String) -> String {
 
 fn calculate_length(s: &String) -> usize {
     s.len()
+}
+
+fn first_word(s: &String) -> &str {
+    //let bytes = s.as_bytes();
+
+    //for (i, &item) in bytes.iter().enumerate() {
+    //     if item == b' ' {
+    //         return i;
+    //     }
+    // }
+
+    // s.len()
+
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[..i];
+        }
+    }
+
+    &s[..]
 }
