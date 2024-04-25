@@ -22,6 +22,30 @@ fn main() {
         "The area of the rectangle is {} square pixels.",
         area(&rect) // Borrowing the reference to the struct will prevent the struct from being moved
     );
+
+    println!(
+        "The area of the rectangle is {} square pixels.",
+        rect.area() // Using the method
+    );
+
+    let rect1 = Rectangle {
+        width: 30,
+        height: 50,
+    };
+    let rect2 = Rectangle {
+        width: 10,
+        height: 40,
+    };
+    let rect3 = Rectangle {
+        width: 60,
+        height: 45,
+    };
+
+    println!("Can rect1 hold rect2? {}", rect1.can_hold(&rect2));
+    println!("Can rect1 hold rect3? {}", rect1.can_hold(&rect3));
+
+    let sq = Rectangle::square(3);
+    println!("Square is {:?}", sq);
 }
 
 struct User {
@@ -48,4 +72,24 @@ fn area(rectangle: &Rectangle) -> u32 {
     println!("Rectangle is {:#?}", rectangle); // Debug print with pretty print
     dbg!(rectangle); // Debug output
     rectangle.width * rectangle.height
+}
+
+impl Rectangle {
+    // Area as a method
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+    // Method to check if a rectangle can hold another rectangle
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+
+    // Associated function
+    fn square(size: u32) -> Rectangle {
+        Rectangle {
+            width: size,
+            height: size,
+        }
+    }
 }

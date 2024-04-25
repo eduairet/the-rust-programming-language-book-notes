@@ -107,3 +107,59 @@
 ## Methods
 
 - Methods are similar to functions but are defined within the context of a struct.
+
+  ```Rust
+  fn main() {
+      let rect1 = Rectangle { width: 30, height: 50 };
+      println!("The area of the rectangle is {} square pixels.", rect1.area());
+  }
+
+  #[derive(Debug)]
+  struct Rectangle {
+      width: u32,
+      height: u32,
+  }
+
+  impl Rectangle {
+      fn area(&self) -> u32 {
+          self.width * self.height
+      }
+  }
+  ```
+
+- Methods are defined within an `impl` block.
+- Methods can take ownership of `self`, borrow `self` immutably, or borrow `self` mutably, just like functions take ownership, borrow, or mutable borrow of their arguments.
+- Rust has no equivalent to `->` like in other languages to access fields of a struct. Instead, Rust has a feature called `Deref` which allows us to overload the `*` operator to access fields of a struct.
+- We can add several methods to the same `impl` block or even multiple `impl` blocks for the same struct.
+
+  ```Rust
+  impl Rectangle {
+      fn area(&self) -> u32 {
+          self.width * self.height
+      }
+
+      fn can_hold(&self, other: &Rectangle) -> bool {
+          self.width > other.width && self.height > other.height
+      }
+  }
+
+  impl Rectangle {
+      fn square(size: u32) -> Rectangle {
+          Rectangle { width: size, height: size }
+      }
+  }
+  ```
+
+## Associated Functions
+
+- Associated functions are functions that are associated with a struct but don't take `self` as a parameter.
+
+  ```Rust
+  impl Rectangle {
+      fn square(size: u32) -> Rectangle {
+          Self { width: size, height: size }
+      }
+  }
+  ```
+
+- Associated functions are often used for constructors that will return a new instance of the struct.
