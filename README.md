@@ -9,6 +9,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 3. [Chapter 3: Common Programming Concepts](./notes/03-common-programming-concepts.md)
 4. [Chapter 4: Understanding Ownership](./notes/04-understanding-ownership.md)
 5. [Chapter 5: Using Structs to Structure Related Data](./notes/05-using-structs-to-structure-related-data.md)
+6. [Chapter 6: Enums and Pattern Matching](./notes/06-enums-and-pattern-matching.md)
 
 ## Resources
 
