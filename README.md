@@ -15,3 +15,4 @@ Eduardo Aire's notes about The Rust Programming Language book
 ## Resources
 
 1. [Official documentation](https://www.rust-lang.org/learn)
+2. You can check external packages at [crates.io](https://crates.io/)
