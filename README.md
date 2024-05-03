@@ -11,6 +11,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 5. [Chapter 5: Using Structs to Structure Related Data](./notes/05-using-structs-to-structure-related-data.md)
 6. [Chapter 6: Enums and Pattern Matching](./notes/06-enums-and-pattern-matching.md)
 7. [Chapter 7: Managing Growing Projects with Packages, Crates, and Modules](./notes/07-managing-growing-projects-with-packages-crates-and-modules.md)
+8. [Chapter 8: Common Collections](./notes/08-common-collections.md)
 
 ## Resources
 
