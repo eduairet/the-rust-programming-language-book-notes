@@ -41,6 +41,27 @@ fn main() {
     }
 
     // Strings
+
+    let data = "initial contents";
+    let s = data.to_string();
+    println!("{}", s);
+
+    let s = String::from("👋👋👋👋");
+    println!("{}", s);
+
+    let mut s = String::from("foo");
+    s.push_str("bar");
+    println!("{}", s);
+
+    let s = "Здравствуйте".to_string();
+    println!("{}", s);
+    println!("{}", &s[0..4]);
+    for c in s.chars() {
+        println!("{}", c);
+    }
+    for b in s.bytes() {
+        println!("{}", b);
+    }
 }
 
 enum SpreadsheetCell {

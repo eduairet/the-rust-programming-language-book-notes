@@ -76,7 +76,106 @@ match v.get(2) {
 
 ## Strings
 
-- Collection of characters.
+- Strings in rust are collections of bytes.
+- The `str` type is a string slice and is the only string type that is hard-coded into the language.
+- The `String` is a growable, mutable, owned, UTF-8 encoded string type provided by the standard library.
+- `str` and `String` are UTF-8 encoded strings.
+- `String` has a lot of similarities with a vector since it's implemented as a wrapper around a vector of bytes.
+
+```Rust
+let mut s = String::new(); // Creates a new empty string.
+let data = "initial contents";
+let s = data.to_string(); // Converts a string slice to a String.
+let s = "initial contents".to_string(); // Does the same as the previous line.
+let s = String::from("initial contents"); // Does the same as the previous line.
+
+// Since strings are UTF-8 encoded, we can include any character in them.
+let hello = String::from("السلام عليكم");
+let hello = String::from("Dobrý den");
+let hello = String::from("Hello");
+let hello = String::from("שָׁלוֹם");
+let hello = String::from("नमस्ते");
+let hello = String::from("こんにちは");
+let hello = String::from("안녕하세요");
+let hello = String::from("你好");
+let hello = String::from("Olá");
+let hello = String::from("Здравствуйте");
+let emoji = String::from("👋");
+```
+
+- Updating a string:
+
+  ```Rust
+  let mut s = String::from("foo");
+  s.push_str("bar"); // Appends a string slice to a String.
+  s.push('l'); // Appends a single character to a String.
+
+  let s1 = String::from("Hello, ");
+  let s2 = String::from("world!");
+  let s3 = s1 + &s2; // The + operator uses the add method.
+  // &s2 coerces the &String to a &str and adds a reference to the string.
+  // s1 has been moved here and can no longer be used.
+  let extra_exclamation = String::from("!!!");
+  s3.push_str(extra_exclamation); // .push_str() takes ownership of extra_exclamation.
+
+  ```
+
+  - The `push_str` method takes a string slice because we don't necessarily want to take ownership of the parameter.
+
+  - When combining several strings, it's better to use the `format!` macro.
+
+    ```Rust
+    let s1 = String::from("tic");
+    let s2 = String::from("tac");
+    let s3 = String::from("toe");
+
+    let s = format!("{}-{}-{}", s1, s2, s3); // The format! macro doesn't take ownership of any of its parameters.
+    ```
+
+- Indexing into strings is not allowed in Rust.
+
+  ```Rust
+  let s1 = String::
+
+  let s1 = String::from("hello");
+  let h = s1[0]; // This will cause a compilation error.
+  ```
+
+  - Rust strings are a collection of bytes, and indexing into a string would return a byte, not a character.
+  - Each can be byte, scalar value and grapheme cluster, and it would be more complex to index into a string.
+    ```rust
+    "नमस्ते"
+    [224, 164, 168, 224, 164, 174, 224, 164, 184, 224, 165, 141, 224, 164, 164, 224, 165, 135] // The bytes of the string
+    ['न', 'म', 'स', '◌्', 'त', '◌े'] // The characters of the string, letters and diacritics.
+    ["न", "म", "स्", "ते"] // The last two characters are grapheme clusters which combine letters and diacritics.
+    ```
+
+- You can slice a string using a range.
+
+  ```Rust
+  let hello = "Здравствуйте";
+  let s = &hello[0..4]; // This will take the first four bytes of the string.
+  ```
+
+  - Be careful when slicing strings because it can cause a panic if the range is not valid.
+
+- If you need to iterate over the characters of a string, you can use the `chars` method.
+
+  ```Rust
+  for c in "नमस्ते".chars() {
+      println!("{}", c);
+  }
+  ```
+
+- If you need to iterate over the bytes of a string, you can use the `bytes` method.
+
+  ```Rust
+  for b in "नमस्ते".bytes() {
+      println!("{}", b);
+  }
+  ```
+
+- For complex operations with strings it's better to use a crate like `unicode-segmentation`.
 
 ## Hash Maps
 
