@@ -12,6 +12,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 6. [Chapter 6: Enums and Pattern Matching](./notes/06-enums-and-pattern-matching.md)
 7. [Chapter 7: Managing Growing Projects with Packages, Crates, and Modules](./notes/07-managing-growing-projects-with-packages-crates-and-modules.md)
 8. [Chapter 8: Common Collections](./notes/08-common-collections.md)
+9. [Chapter 9: Error Handling](./notes/09-error-handling.md)
 
 ## Resources
 

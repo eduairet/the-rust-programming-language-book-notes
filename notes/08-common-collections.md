@@ -179,4 +179,80 @@ let emoji = String::from("👋");
 
 ## Hash Maps
 
-- A hash map allows you to associate a value with a particular key.
+- A hash map allows you to associate a value with a particular key `HashMap<K, V>`.
+- The keys and values can be of any type but all keys must be of the same type, and all values must be of the same type.
+
+  ```Rust
+  use std::collections::HashMap;
+
+  let mut scores = HashMap::new(); // Creates a new empty hash map.
+
+  scores.insert(String::from("Blue"), 10); // Inserts a key-value pair into the hash map.
+  scores.insert(String::from("Yellow"), 50); // Inserts another key-value pair into the hash map.
+
+  let team_name = String::from("Blue");
+  let score = scores.get(&team_name); // Retrieves the value associated with the key.
+  println!("The score of the Blue team is: {:?}", score);
+  ```
+
+- Ownership of the key and value is transferred to the hash map when using the `insert` method.
+- If we insert references to values in the hash map, the values must be valid for the lifetime of the hash map.
+
+  ```Rust
+  use std::collections::HashMap;
+
+  let field_name = String::from("Favorite color");
+  let field_value = String::from("Blue");
+
+  let mut map = HashMap::new();
+  map.insert(field_name, field_value);
+  println!("{:?}", field_name);
+  // field_name and field_value are invalid at this point,
+  // try using them and see what compiler error you get!
+  ```
+
+- Updating a value in a hash map:
+
+  ```Rust
+  use std::collections::HashMap;
+
+  let mut scores = HashMap::new();
+
+  scores.insert(String::from("Blue"), 10);
+  scores.insert(String::from("Blue"), 25); // Updates the value associated with the key.
+
+  println!("{:?}", scores);
+  ```
+
+- Inserting a value if the key has no value:
+
+  ```Rust
+  use std::collections::HashMap;
+
+  let mut scores = HashMap::new();
+  scores.insert(String::from("Blue"), 10);
+
+  scores.entry(String::from("Yellow")).or_insert(50); // Inserts a value if the key has no value.
+  scores.entry(String::from("Blue")).or_insert(50); // Doesn't insert a value because the key already has a value.
+
+  println!("{:?}", scores);
+  ```
+
+- Updating a value based on the old value:
+
+  ```Rust
+  use std::collections::HashMap;
+
+  let text = "hello world wonderful world";
+  let mut map = HashMap::new();
+
+  for word in text.split_whitespace() {
+      let count = map.entry(word).or_insert(0); // Returns a mutable reference to the value.
+      *count += 1; // Dereferences the value and increments it.
+  }
+
+  println!("{:?}", map);
+  ```
+- Hash maps use a hashing function named `SipHash` that provides resistance against certain attacks like `DoS` attacks.
+- The `SipHash` function is not the fastest but provides a good balance between speed and security.
+- If you need a faster hashing function, you can use the `FxHash` crate.
