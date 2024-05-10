@@ -26,6 +26,7 @@
   ```
 - A backtrace is a list of all the functions that have been called to get to this point.
 - You can run the program with the `RUST_BACKTRACE=1` environment variable to display a backtrace.
+- Panicking is good idea when something unexpected can happen, like a bug in the program, the user providing invalid input, or a file not found, etc.
 
 ## Recoverable Errors with `Result`
 
@@ -111,3 +112,117 @@
   ```
 
 ## Shortcuts for Panic on Error: `unwrap` and `expect`
+
+- The `unwrap` method is a shortcut for panic on error:
+
+  ```rust
+  use std::fs::File;
+
+  fn main() {
+      let f = File::open("hello.txt").unwrap(); // This will panic
+  }
+  ```
+
+- The `expect` method is similar to `unwrap`, but it allows you to specify the error message:
+
+  ```rust
+  use std::fs::File;
+
+  fn main() {
+      let f = File::open("hello.txt").expect("Failed to open hello.txt"); // This will panic
+  }
+  ```
+
+- Calling `unwrap` or `expect` is a good choice when you're sure that the operation will succeed.
+
+## Propagating Errors
+
+- You can propagate errors by calling code to handle the error:
+
+  ```rust
+  use std::fs::File;
+  use std::io::{self, Read};
+
+  fn read_username_from_file() -> Result<String, io::Error> {
+    let username_file_result = File::open("hello.txt");
+
+    let mut username_file = match username_file_result {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut username = String::new();
+
+    match username_file.read_to_string(&mut username) {
+        Ok(_) => Ok(username),
+        Err(e) => Err(e),
+    }
+  }
+  ```
+
+## A Shortcut for Propagating Errors: The `?` Operator
+
+- The `?` operator is a shortcut for propagating errors:
+
+  ```rust
+  use std::fs::File;
+  use std::io::{self, Read};
+
+  fn read_username_from_file() -> Result<String, io::Error> {
+      let mut username_file = File::open("hello.txt")?;
+      let mut username = String::new();
+      username_file.read_to_string(&mut username)?;
+      Ok(username)
+  }
+  ```
+
+- `?` uses the `From` trait to convert the error type to the return type of the function.
+- You can chain multiple `?` operators to propagate errors and make the code more concise:
+
+  ```rust
+  use std::fs::File;
+  use std::io::{self, Read};
+
+  fn read_username_from_file() -> Result<String, io::Error> {
+      let mut username = String::new();
+      File::open("hello.txt")?.read_to_string(&mut username)?;
+      Ok(username)
+  }
+  ```
+
+## Where the `?` Operator Can Be Used
+
+- With functions compatible with the value returned by the function.
+  - Inside functions that return `Result` or `Option`.
+  - Custom types that implement the `From` trait.
+  - You can't mix `Result` and `Option` in the same function.
+    - You can use the `ok_or` method to convert an `Option` to a `Result`.
+- With the `main` function:
+  - You can use the `?` operator in the `main` function if it returns `Result<(), T>`.
+  - You can use the `Result` type to handle errors in the `main` function.
+
+## Creating Custom Types for Validation
+
+- You can create custom types to handle validation:
+
+  ```rust
+  pub struct Guess {
+      value: i32,
+  }
+
+  impl Guess {
+      // Constructor method
+      pub fn new(value: i32) -> Guess {
+          if value < 1 || value > 100 {
+              panic!("Guess value must be between 1 and 100, got {}.", value);
+          }
+
+          Guess { value }
+      }
+
+      // Getter method
+      pub fn value(&self) -> i32 {
+          self.value
+      }
+  } // This will panic if the value is not between 1 and 100
+  ```
