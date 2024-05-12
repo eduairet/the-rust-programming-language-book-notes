@@ -13,6 +13,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 7. [Chapter 7: Managing Growing Projects with Packages, Crates, and Modules](./notes/07-managing-growing-projects-with-packages-crates-and-modules.md)
 8. [Chapter 8: Common Collections](./notes/08-common-collections.md)
 9. [Chapter 9: Error Handling](./notes/09-error-handling.md)
+10. [Chapter 10: Generic Types, Traits, and Lifetimes](./notes/10-generic-types-traits-and-lifetimes.md)
 
 ## Resources
 
