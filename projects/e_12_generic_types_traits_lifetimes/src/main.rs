@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 fn main() {
     let number_list = vec![34, 50, 25, 100, 65];
 
@@ -28,7 +30,36 @@ fn main() {
         ),
     };
 
+    let pair = Pair::new(10, 20);
+    pair.cmp_display();
+
     println!("New article available! {}", article.summarize());
+
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is {}", result);
+
+    let novel = String::from("Call me Ishmael. Some years ago...");
+    let first_sentence = novel.split('.').next().expect("Could not find a '.'");
+    let i = ImportantExcerpt {
+        part: first_sentence,
+    };
+    println!("Important excerpt: {}", i.part);
+
+    let ann = "Announcement!";
+
+    let i = ImportantExcerpt {
+        part: first_sentence,
+    };
+    println!("Important excerpt: {}", i.announce_and_return_part(ann));
+
+    let s: &'static str = "I have a static lifetime.";
+    println!("{}", s);
+
+    let result = longest_with_an_announcement(string1.as_str(), string2, ann);
+    println!("The longest string is {}", result);
 }
 
 // Function with generic types
@@ -91,4 +122,61 @@ impl Summary for NewsArticle {
     }
 
     // Summarize method is implemented by default
+}
+
+// Struct with generic types and trait bounds
+struct Pair<T> {
+    x: T,
+    y: T,
+}
+
+impl<T> Pair<T> {
+    fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+}
+
+impl<T: Display + PartialOrd> Pair<T> {
+    fn cmp_display(&self) {
+        if self.x >= self.y {
+            println!("The largest member is x = {}", self.x);
+        } else {
+            println!("The largest member is y = {}", self.y);
+        }
+    }
+}
+
+// Function with lifetimes
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+// Struct with lifetimes
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+// Lifetime annotations in method definitions
+impl<'a> ImportantExcerpt<'a> {
+    fn announce_and_return_part(&self, announcement: &str) -> &str {
+        println!("Attention please: {}", announcement);
+        self.part
+    }
+}
+
+// Generic Type Parameters, Trait Bounds, and Lifetimes Together
+fn longest_with_an_announcement<'a, T>(x: &'a str, y: &'a str, ann: T) -> &'a str
+where
+    T: Display,
+{
+    println!("Announcement! {}", ann);
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
 }
