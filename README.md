@@ -14,6 +14,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 8. [Chapter 8: Common Collections](./notes/08-common-collections.md)
 9. [Chapter 9: Error Handling](./notes/09-error-handling.md)
 10. [Chapter 10: Generic Types, Traits, and Lifetimes](./notes/10-generic-types-traits-and-lifetimes.md)
+11. [Chapter 11: Writing Automated Tests](./notes/11-writing-automated-tests.md)
 
 ## Resources
 
