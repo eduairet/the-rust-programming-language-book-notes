@@ -246,8 +246,4 @@
       }
       ```
 
-  - **Property-based tests**: Test the properties of the code.
-  - **Fuzz tests**: Test the code with random inputs.
-  - **Regression tests**: Test the code to ensure that new changes do not break existing functionality.
-
 - Take into account that Rust allows you to test private functions
