@@ -22,6 +22,42 @@ let expensive_closure = |num: u32| -> u32 {
 ```
 
 - Closures can capture values from their environment in three ways:
-  - Taking ownership: `let x = vec![1, 2, 3]; let equal_to_x = move |z| z == x;`
-  - Borrowing: `let x = vec![1, 2, 3]; let equal_to_x = |z| z == &x;`
-  - Mutably borrowing: `let mut x = vec![1, 2, 3]; let equal_to_x = |z| z == &mut x;`
+
+  - Borrowing:
+
+    ```Rust
+    let list = vec![1, 2, 3];
+    println!("Before defining closure: {:?}", list);
+
+    let only_borrows = || println!("From closure: {:?}", list);
+
+    println!("Before calling closure: {:?}", list);
+    only_borrows();
+    println!("After calling closure: {:?}", list);
+    ```
+
+  - Mutably borrowing:
+
+    ```Rust
+    let mut list = vec![1, 2, 3];
+    println!("Before defining closure: {:?}", list);
+
+    let mut borrows_mutably = || list.push(4);
+
+    borrows_mutably();
+    println!("After calling closure: {:?}", list);
+    ```
+
+  - Moving ownership:
+
+    ```Rust
+    use std::thread;
+
+    let list = vec![1, 2, 3];
+    println!("Before defining closure: {:?}", list);
+
+    // The move keyword forces the closure to take ownership of the values it uses.
+    thread::spawn(move || {
+      println!("From thread: {:?}", list)
+    }).join().unwrap();
+    ```
