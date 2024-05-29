@@ -7,16 +7,30 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build(args: &[String]) -> Result<Config, &'static str> {
-        if args.len() < 3 {
-            return Err("Not enough arguments!");
-        }
+    pub fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        //if args.len() < 3 {
+        //    return Err("Not enough arguments!");
+        //}
         // We need to clone the values because we are borrowing them from the args vector,
         // if we don't clone them, the ownership of the values will be moved to the Config struct
         // which is a violation of the borrowing rules.
         // This operation might be expensive if the values are large.
-        let query = args[1].clone();
-        let file_path = args[2].clone();
+        //let query = args[1].clone();
+        //let file_path = args[2].clone();
+
+        // After refactoring using an iterator.
+        args.next(); // Skip the first argument which is the program name.
+
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Query not found!"),
+        };
+
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("File path not found!"),
+        };
+
         // The env::var function returns a Result type, if the variable is not found it returns an Err value.
         let ignore_case = env::var("IGNORE_CASE").is_ok();
 

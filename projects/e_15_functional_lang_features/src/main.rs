@@ -44,6 +44,71 @@ fn main() {
     thread::spawn(move || println!("From thread: {:?}", list))
         .join()
         .unwrap();
+
+    // Fn
+    // FnOnce
+    let x = String::from("Hello, world!");
+
+    let print_x = move || {
+        println!("{}", x);
+    };
+
+    call_fn_once(print_x); // After this line, print_x is no longer usable
+
+    // FnMut
+    let mut list = [
+        Rectangle {
+            width: 10,
+            height: 1,
+        },
+        Rectangle {
+            width: 3,
+            height: 5,
+        },
+        Rectangle {
+            width: 7,
+            height: 12,
+        },
+    ];
+
+    list.sort_by_key(|r| r.width); // Here, the closure borrows the list mutably
+    println!("{:#?}", list);
+
+    let mut list = [
+        Rectangle {
+            width: 10,
+            height: 1,
+        },
+        Rectangle {
+            width: 3,
+            height: 5,
+        },
+        Rectangle {
+            width: 7,
+            height: 12,
+        },
+    ];
+
+    let mut num_sort_operations = 0;
+    list.sort_by_key(|r| {
+        num_sort_operations += 1;
+        r.width
+    }); // With .sort_by_key(), the closure is called multiple times
+    println!("{:#?}, sorted in {num_sort_operations} operations", list);
+
+    // Iterators
+
+    let list = vec![1, 2, 3, 4, 5];
+    let sum: i32 = list.iter().sum();
+    println!("Sum: {}", sum);
+
+    let list = vec![1, 2, 3, 4, 5];
+    let mapped = list.iter().map(|x| x * x).collect::<Vec<i32>>(); // After map you need to consume the iterator
+    println!("Mapped: {:#?}", mapped);
+
+    let list = vec![1, 2, 3, 4, 5];
+    let filtered = list.iter().filter(|x| *x % 2 == 0).collect::<Vec<&i32>>();
+    println!("Filtered: {:#?}", filtered);
 }
 
 #[derive(Debug, PartialEq, Copy, Clone)]
@@ -77,4 +142,15 @@ impl Inventory {
             ShirtColor::Blue
         }
     }
+}
+
+fn call_fn_once<F: FnOnce()>(f: F) {
+    f();
+}
+
+#[derive(Debug)]
+#[allow(dead_code)]
+struct Rectangle {
+    width: u32,
+    height: u32,
 }
