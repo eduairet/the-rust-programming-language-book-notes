@@ -17,6 +17,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 11. [Chapter 11: Writing Automated Tests](./notes/11-writing-automated-tests.md)
 12. [Chapter 12: An I/O Project: Building a Command Line Program](./projects/e_14_cli_program)
 13. [Chapter 13: Functional Language Features: Iterators and Closures](./notes/13-functional-language-features-iterators-and-closures.md)
+14. [Chapter 14: More about Cargo and Crates.io](./notes/14-more-about-cargo-and-crates-io.md)
 
 ## Resources
 
