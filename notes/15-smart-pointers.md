@@ -13,6 +13,9 @@
         - For example, when you use the `*` operator on a string literal, the compiler automatically dereferences it to a `&str`
       - The mutable dereference operator `*` is also implemented by the `DerefMut` trait
     - `Drop`: allows you to customize the code that is run when an instance of the smart pointer goes out of scope
+      - This is useful for releasing resources like file handles or network connections
+      - The `drop` method is called automatically when the instance goes out of scope but it can also be called with the help of `std::mem::drop` when you need to release the resources earlier
+      - Trying to drop manually will result in a double free error
 
 ## Using Box<T> to Point to Data on the Heap
 
@@ -23,3 +26,5 @@
   - You have a type whose size can't be known at compile time
   - You have a large amount of data and you want to transfer ownership but ensure the data won't be copied when you do so
   - You want to own a value and you care only that it's a type that implements a particular trait rather than any specific type
+
+## Rc<T>, the Reference Counted Smart Pointer

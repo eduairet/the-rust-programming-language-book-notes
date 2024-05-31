@@ -1,4 +1,7 @@
-use std::ops::{Deref, DerefMut};
+use std::{
+    mem::drop,
+    ops::{Deref, DerefMut},
+};
 
 fn main() {
     let b = Box::new(5); // b is a smart pointer and it is stored on the heap
@@ -44,6 +47,23 @@ fn main() {
     // DerefMut trait
     let mut m = MyBox::new(String::from("Rust"));
     hello_mut(&mut m);
+
+    // The Drop trait
+    let _c = CustomSmartPointer {
+        data: String::from("my stuff"),
+    };
+    let _d = CustomSmartPointer {
+        data: String::from("other stuff"),
+    };
+    println!("CustomSmartPointers created.");
+
+    // Dropping a value before it goes out of scope
+    let c = CustomSmartPointer {
+        data: String::from("some data"),
+    };
+    println!("CustomSmartPointer created.");
+    drop(c); // Dropping the value before it goes out of scope
+    println!("CustomSmartPointer dropped before the end of main.");
 }
 
 #[derive(Debug)]
@@ -84,4 +104,16 @@ fn hello(name: &str) {
 fn hello_mut(name: &mut MyBox<String>) {
     name.push_str("!");
     println!("Hello, {:#?}!", name);
+}
+
+// The Drop trait
+struct CustomSmartPointer {
+    data: String,
+}
+
+impl Drop for CustomSmartPointer {
+    fn drop(&mut self) {
+        // When the object goes out of scope this is triggered
+        println!("Dropping CustomSmartPointer with data `{}`!", self.data);
+    }
 }
