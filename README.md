@@ -18,6 +18,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 12. [Chapter 12: An I/O Project: Building a Command Line Program](./projects/e_14_cli_program)
 13. [Chapter 13: Functional Language Features: Iterators and Closures](./notes/13-functional-language-features-iterators-and-closures.md)
 14. [Chapter 14: More about Cargo and Crates.io](./notes/14-more-about-cargo-and-crates-io.md)
+15. [Chapter 15: Smart Pointers](./notes/15-smart-pointers.md)
 
 ## Resources
 
