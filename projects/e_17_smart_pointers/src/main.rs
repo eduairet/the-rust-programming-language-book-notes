@@ -1,6 +1,8 @@
 use std::{
+    cell::RefCell,
     mem::drop,
     ops::{Deref, DerefMut},
+    rc::Rc,
 };
 
 fn main() {
@@ -64,6 +66,47 @@ fn main() {
     println!("CustomSmartPointer created.");
     drop(c); // Dropping the value before it goes out of scope
     println!("CustomSmartPointer dropped before the end of main.");
+
+    // Shared pointers
+    let a = Rc::new(LinkedListMultiple::Cons(
+        5,
+        Rc::new(LinkedListMultiple::Cons(
+            10,
+            Rc::new(LinkedListMultiple::Nil),
+        )),
+    ));
+    let _b = LinkedListMultiple::Cons(3, Rc::clone(&a));
+    let _c = LinkedListMultiple::Cons(4, Rc::clone(&a)); // Cloning the reference to a
+    println!("{:#?}", a);
+    println!("Reference count: {}", Rc::strong_count(&a));
+
+    let value = Rc::new(RefCell::new(5));
+    let value2 = Rc::clone(&value);
+
+    *value.borrow_mut() += 10;
+    *value2.borrow_mut() += 20;
+
+    println!("value = {:?}", value.borrow()); // value = RefCell { value: 35 }
+
+    // Multiple owners of mutable data
+    let value = Rc::new(RefCell::new(5));
+
+    let a = Rc::new(ListMultiple::Cons(
+        // Creating a list with multiple owners of mutable data
+        Rc::clone(&value),
+        Rc::new(ListMultiple::Nil),
+    ));
+
+    // Creating two more references to the list
+    let b = ListMultiple::Cons(Rc::new(RefCell::new(3)), Rc::clone(&a));
+    let c = ListMultiple::Cons(Rc::new(RefCell::new(4)), Rc::clone(&a));
+
+    // Modifying the value
+    *value.borrow_mut() += 10;
+
+    println!("a after = {:?}", a);
+    println!("b after = {:?}", b);
+    println!("c after = {:?}", c);
 }
 
 #[derive(Debug)]
@@ -116,4 +159,93 @@ impl Drop for CustomSmartPointer {
         // When the object goes out of scope this is triggered
         println!("Dropping CustomSmartPointer with data `{}`!", self.data);
     }
+}
+
+// Shared pointers
+
+#[derive(Debug)]
+#[allow(dead_code)]
+enum LinkedListMultiple {
+    Cons(i32, Rc<LinkedListMultiple>),
+    Nil,
+}
+
+// Mock implementation of RefCell
+pub trait Messenger {
+    fn send(&self, msg: &str);
+}
+
+pub struct LimitTracker<'a, T: Messenger> {
+    messenger: &'a T,
+    value: usize,
+    max: usize,
+}
+
+impl<'a, T> LimitTracker<'a, T>
+where
+    T: Messenger,
+{
+    pub fn new(messenger: &'a T, max: usize) -> LimitTracker<'a, T> {
+        LimitTracker {
+            messenger,
+            value: 0,
+            max,
+        }
+    }
+    pub fn set_value(&mut self, value: usize) {
+        self.value = value;
+
+        let percentage_of_max = self.value as f64 / self.max as f64;
+
+        if percentage_of_max >= 1.0 {
+            self.messenger.send("Error: You are over your quota!");
+        } else if percentage_of_max >= 0.9 {
+            self.messenger.send("Urgent: You're at 90% of your quota!");
+        } else if percentage_of_max >= 0.75 {
+            self.messenger.send("Warning: You're at 75% of your quota!");
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::cell::RefCell;
+
+    struct MockMessenger {
+        // Implementing a mock Messenger to test the LimitTracker
+        sent_messages: RefCell<Vec<String>>,
+    }
+
+    impl MockMessenger {
+        fn new() -> MockMessenger {
+            MockMessenger {
+                // Creating a new MockMessenger
+                sent_messages: RefCell::new(vec![]),
+            }
+        }
+    }
+
+    impl Messenger for MockMessenger {
+        fn send(&self, message: &str) {
+            self.sent_messages.borrow_mut().push(String::from(message));
+        }
+    }
+
+    #[test]
+    fn it_sends_an_over_75_percent_warning_message() {
+        let mock_messenger = MockMessenger::new();
+        let mut limit_tracker = LimitTracker::new(&mock_messenger, 100);
+
+        limit_tracker.set_value(80);
+        assert_eq!(mock_messenger.sent_messages.borrow().len(), 1);
+    }
+}
+
+// Multiple owners of mutable data
+#[derive(Debug)]
+#[allow(dead_code)]
+enum ListMultiple {
+    Cons(Rc<RefCell<i32>>, Rc<ListMultiple>),
+    Nil,
 }
