@@ -19,7 +19,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 13. [Chapter 13: Functional Language Features: Iterators and Closures](./notes/13-functional-language-features-iterators-and-closures.md)
 14. [Chapter 14: More about Cargo and Crates.io](./notes/14-more-about-cargo-and-crates-io.md)
 15. [Chapter 15: Smart Pointers](./notes/15-smart-pointers.md)
-16. [Chapter 16: TBD](./notes/)
+16. [Chapter 16: Fearless Concurrency](./notes/16-fearless-concurrency.md)
 
 ## Resources
 
