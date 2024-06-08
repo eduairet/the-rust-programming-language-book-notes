@@ -76,3 +76,7 @@
       }
   }
   ```
+
+- Polymorphism can be achieved using dynamic dispatch or static dispatch.
+  - When using dynamic dispatch, Rust uses trait objects to enable polymorphism. Trait objects are created by boxing a type that implements a trait. This allows for different types to be stored in a single data structure.
+  - Static dispatch is used when the concrete type is known at compile time. This allows the compiler to optimize the code by inlining the method calls.
