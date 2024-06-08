@@ -29,6 +29,15 @@ fn main() {
     };
 
     _screen.run();
+
+    // OOP Design Pattern: State Pattern
+    let mut post = Post::new();
+    post.add_text("I ate a salad for lunch today");
+    assert_eq!("", post.content());
+    post.request_review();
+    assert_eq!("", post.content());
+    post.approve();
+    assert_eq!("I ate a salad for lunch today", post.content());
 }
 
 // Encapsulation
@@ -111,5 +120,69 @@ pub struct Button {
 impl Draw for Button {
     fn draw(&self) {
         println!("Drawing Button");
+    }
+}
+
+// OOP Design Pattern: State Pattern
+pub trait State {
+    fn request_review(self: Box<Self>) -> Box<dyn State>;
+    fn approve(self: Box<Self>) -> Box<dyn State>;
+}
+
+pub struct PendingReview {}
+
+impl State for PendingReview {
+    fn request_review(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
+
+    fn approve(self: Box<Self>) -> Box<dyn State> {
+        Box::new(Approved {})
+    }
+}
+
+pub struct Approved {}
+
+impl State for Approved {
+    fn request_review(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
+
+    fn approve(self: Box<Self>) -> Box<dyn State> {
+        self
+    }
+}
+
+pub struct Post {
+    state: Option<Box<dyn State>>,
+    content: String,
+}
+
+impl Post {
+    pub fn new() -> Post {
+        Post {
+            state: Some(Box::new(PendingReview {})),
+            content: String::new(),
+        }
+    }
+
+    pub fn add_text(&mut self, text: &str) {
+        self.content.push_str(text);
+    }
+
+    pub fn content(&self) -> &str {
+        self.content.as_str()
+    }
+
+    pub fn request_review(&mut self) {
+        if let Some(s) = self.state.take() {
+            self.state = Some(s.request_review());
+        }
+    }
+
+    pub fn approve(&mut self) {
+        if let Some(s) = self.state.take() {
+            self.state = Some(s.approve());
+        }
     }
 }
