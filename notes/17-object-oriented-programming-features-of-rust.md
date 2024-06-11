@@ -115,3 +115,6 @@
     }
   }
   ```
+
+- The state pattern might have some trade-offs, like the complexity of managing the state transitions and the boilerplate code required to implement the pattern.
+- Sometimes it would be better to encode States and Behaviors as types.
