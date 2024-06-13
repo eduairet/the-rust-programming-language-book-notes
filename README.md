@@ -22,6 +22,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 16. [Chapter 16: Fearless Concurrency](./notes/16-fearless-concurrency.md)
 17. [Chapter 17: Object Oriented Programming Features of Rust](./notes/17-object-oriented-programming-features-of-rust.md)
 18. [Chapter 18: Patterns and Matching](./notes/18-patterns-and-matching.md)
+19. [Chapter 19: Advanced Features](./notes/19-advanced-features.md)
 
 ## Resources
 
