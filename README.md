@@ -1,6 +1,6 @@
 # The Rust Programming Language Book Notes
 
-Eduardo Aire's notes about The Rust Programming Language book
+Eduardo Aire's notes about The Rust Programming Language book.
 
 ## Notes Index
 
