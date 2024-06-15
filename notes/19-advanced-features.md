@@ -166,29 +166,10 @@
 - Associate types are a way to define a type placeholder inside a trait definition to be specified later.
 
   ```rust
-  trait Graph {
-      type N;
-      type E;
+  // Associated types
+  pub trait Iterator {
+      type Item;
 
-      fn has_edge(&self, &Self::N, &Self::N) -> bool;
-      fn edges(&self, &Self::N) -> Vec<Self::E>;
-  }
-
-  struct Node;
-  struct Edge;
-
-  struct MyGraph;
-
-  impl Graph for MyGraph {
-      type N = Node;
-      type E = Edge;
-
-      fn has_edge(&self, n1: &Node, n2: &Node) -> bool {
-          true
-      }
-
-      fn edges(&self, n: &Node) -> Vec<Edge> {
-          Vec::new()
-      }
-  }
+      fn next(&mut self) -> Option<Self::Item>;
+  } // Connection between the type Item and the type that the next method returns
   ```
