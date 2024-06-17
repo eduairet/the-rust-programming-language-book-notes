@@ -23,6 +23,7 @@ Eduardo Aire's notes about The Rust Programming Language book
 17. [Chapter 17: Object Oriented Programming Features of Rust](./notes/17-object-oriented-programming-features-of-rust.md)
 18. [Chapter 18: Patterns and Matching](./notes/18-patterns-and-matching.md)
 19. [Chapter 19: Advanced Features](./notes/19-advanced-features.md)
+20. [Chapter 20: Final Project: Building a Multithreaded Web Server](./projects/e_20_web_server)
 
 ## Resources
 
