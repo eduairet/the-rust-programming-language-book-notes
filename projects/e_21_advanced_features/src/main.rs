@@ -1,4 +1,4 @@
-use std::slice;
+use std::{fmt, ops::Add, slice};
 
 fn main() {
     // Dereferencing a raw pointer
@@ -58,6 +58,30 @@ fn main() {
     unsafe {
         println!("iof.i: {}", iof.i);
     }
+
+    // Operation overloading
+    assert_eq!(
+        Point { x: 1, y: 0 } + Point { x: 2, y: 3 },
+        Point { x: 3, y: 3 }
+    );
+
+    // Disambiguating methods with the same name
+    let person = Human;
+    person.fly();
+    Pilot::fly(&person);
+    Wizard::fly(&person);
+
+    println!("A baby dog is called a {}", Dog::baby_name());
+    println!("A baby dog is called a {}", <Dog as Animal>::baby_name());
+    // We need to use <Dog as Animal> to disambiguate the call to baby_name
+
+    // Supertraits
+    let p = SupertraitPoint { x: 1, y: 2 };
+    p.outline_print();
+
+    // The new type pattern
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+    println!("w = {}", w);
 }
 
 unsafe fn dangerous() {
@@ -65,7 +89,8 @@ unsafe fn dangerous() {
     println!("This is a dangerous function");
 }
 
-// Splitting a slice using unsafe code and wrapping it in a safe function
+// Splitting a slice using unsafe code and wrapping it in a safe function+
+
 fn split_at_mut(values: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
     let len = values.len();
     let ptr = values.as_mut_ptr();
@@ -108,4 +133,104 @@ unsafe impl Foo for i32 {
 union IntOrFloat {
     i: i32,
     f: f32,
+}
+
+// Operation overloading
+#[derive(Debug, Copy, Clone, PartialEq)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Add for Point {
+    type Output = Point;
+
+    fn add(self, other: Point) -> Point {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
+// Disambiguating methods with the same name
+trait Pilot {
+    fn fly(&self);
+}
+
+trait Wizard {
+    fn fly(&self);
+}
+
+struct Human;
+
+impl Pilot for Human {
+    fn fly(&self) {
+        println!("This is your captain speaking.");
+    }
+}
+
+impl Wizard for Human {
+    fn fly(&self) {
+        println!("Up!");
+    }
+}
+
+impl Human {
+    fn fly(&self) {
+        println!("*waving arms furiously*");
+    }
+}
+
+trait Animal {
+    fn baby_name() -> String;
+}
+
+struct Dog;
+
+impl Dog {
+    fn baby_name() -> String {
+        String::from("Spot")
+    }
+}
+
+impl Animal for Dog {
+    fn baby_name() -> String {
+        String::from("puppy")
+    }
+}
+
+// Supertraits
+trait OutlinePrint: fmt::Display {
+    fn outline_print(&self) {
+        let output = self.to_string();
+        let len = output.len();
+        println!("{}", "*".repeat(len + 4));
+        println!("*{}*", " ".repeat(len + 2));
+        println!("* {} *", output);
+        println!("*{}*", " ".repeat(len + 2));
+        println!("{}", "*".repeat(len + 4));
+    }
+}
+
+struct SupertraitPoint {
+    x: i32,
+    y: i32,
+}
+
+impl OutlinePrint for SupertraitPoint {}
+
+impl fmt::Display for SupertraitPoint {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
+// The new type pattern
+struct Wrapper(Vec<String>);
+
+impl fmt::Display for Wrapper {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.0.join(", "))
+    }
 }
