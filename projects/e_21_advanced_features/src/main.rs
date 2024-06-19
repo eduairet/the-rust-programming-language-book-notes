@@ -96,6 +96,12 @@ fn main() {
 
     println!("x + y = {}", x + y);
 
+    // Returning closures
+    let f = returns_closure();
+    let answer = f(5);
+
+    println!("The answer is: {}", answer);
+
     // The never type that never returns
     bar();
 }
@@ -271,4 +277,9 @@ type Kilometers = i32;
 // The never type that never returns
 fn bar() -> ! {
     panic!("This function never returns!");
+}
+
+// Returning closures
+fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
+    Box::new(|x| x + 1)
 }

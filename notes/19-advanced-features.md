@@ -377,3 +377,45 @@
   - The `?Trait` is only available for `Sized`
 
 ## Advanced Functions and Closures
+
+- Function pointers are a type that stores the signature of a function.
+
+  ```rust
+  fn add_one(x: i32) -> i32 {
+      x + 1
+  }
+
+  // Note that the type of the function pointer is fn(i32) -> i32
+  // don't confuse it with the Fn trait
+  fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+      f(arg) + f(arg)
+  }
+
+  fn main() {
+      let answer = do_twice(add_one, 5);
+
+      println!("The answer is: {}", answer);
+  }
+  ```
+
+  - The `fn` type is a trait that is implemented by function pointers.
+  - A good use case for this behavior is when we want to pass a function from external code like `C` to our code, since `C` does not have the concept of closures.
+
+- There are occasions when we want to return a closure from a function, this is not literally possible because closures are anonymous types, but we can use the `impl Trait` syntax to return a closure.
+
+  ```rust
+  fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
+      Box::new(|x| x + 1)
+  }
+
+  fn main() {
+      let f = returns_closure();
+      let answer = f(5);
+
+      println!("The answer is: {}", answer);
+  }
+  ```
+
+  - The `impl Trait` syntax is used to return a type that implements a trait, in this case the `Fn` trait.
+
+## Macros
