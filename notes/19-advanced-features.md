@@ -285,7 +285,7 @@
   }
   ```
 
-- The new type pattern is used to create a new type that is distinct from its original type.
+- The `newtype` pattern is used to create a new type that is distinct from its original type.
 
   ```rust
   use std::fmt;
@@ -305,3 +305,75 @@
   ```
 
 ## Advanced Types
+
+- The `newtype` pattern can be also used to guarantee type safety and abstraction.
+
+  ```rust
+  struct Millimeters(u32);
+  struct Meters(u32);
+
+  impl Add<Meters> for Millimeters {
+      type Output = Millimeters;
+
+      fn add(self, other: Meters) -> Millimeters {
+          Millimeters(self.0 + (other.0 * 1000))
+      }
+  }
+
+  fn main() {
+      let mm = Millimeters(1000);
+      let m = Meters(1);
+
+      let mm_plus_m = mm + m;
+
+      println!("mm_plus_m = {:?}", mm_plus_m);
+  }
+  ```
+
+- With type aliases we can create type synonyms.
+
+  ```rust
+  type Kilometers = i32; // Kilometers is a synonym for i32
+
+  let x: i32 = 5;
+  let y: Kilometers = 5;
+
+  println!("x + y = {}", x + y);
+
+  type Thunk = Box<dyn Fn() + Send + 'static>; // Useful for long type definitions
+
+  let f: Thunk = Box::new(|| println!("hi"));
+
+  fn takes_long_type(f: Thunk) {
+      // --snip--
+  }
+
+  fn returns_long_type() -> Thunk {
+      // --snip--
+  }
+  ```
+
+  - Be careful with type aliases, for example the `Kilometers` type is not a new type, it is just an alias for `i32` and when we use it we are actually using `i32`.
+
+- Another handy type is the `Never` type, which is a type that never returns.
+
+  ```rust
+  fn bar() -> ! {
+      // --snip--
+  }
+  ```
+
+  - The `Never` type is useful for functions that always panic or never return.
+
+- There will be occasions when we need to use dynamically sized types, which are types that have a size that we only find out at runtime.
+
+  ```rust
+  fn generic<T: ?Sized>(t: &T) {
+      // --snip--
+  }
+  ```
+
+  - The `?Sized` trait bound is used to specify that the type `T` must be a dynamically sized type.
+  - The `?Trait` is only available for `Sized`
+
+## Advanced Functions and Closures

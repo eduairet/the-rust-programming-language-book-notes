@@ -82,6 +82,22 @@ fn main() {
     // The new type pattern
     let w = Wrapper(vec![String::from("hello"), String::from("world")]);
     println!("w = {}", w);
+
+    let mm = Millimeters(1000);
+    let m = Meters(1);
+
+    let mm_plus_m = mm + m;
+
+    println!("mm_plus_m = {:?}", mm_plus_m);
+
+    // Type aliases for type synonyms
+    let x: i32 = 5;
+    let y: Kilometers = 5;
+
+    println!("x + y = {}", x + y);
+
+    // The never type that never returns
+    bar();
 }
 
 unsafe fn dangerous() {
@@ -226,11 +242,33 @@ impl fmt::Display for SupertraitPoint {
     }
 }
 
-// The new type pattern
+// The newtype pattern
 struct Wrapper(Vec<String>);
 
 impl fmt::Display for Wrapper {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "[{}]", self.0.join(", "))
     }
+}
+
+// Newtype pattern is used to guarantee type safety and abstraction
+#[derive(Debug)]
+struct Millimeters(u32);
+#[derive(Debug)]
+struct Meters(u32);
+
+impl Add<Meters> for Millimeters {
+    type Output = Millimeters;
+
+    fn add(self, other: Meters) -> Millimeters {
+        Millimeters(self.0 + (other.0 * 1000))
+    }
+}
+
+// Type aliases fot type synonyms
+type Kilometers = i32;
+
+// The never type that never returns
+fn bar() -> ! {
+    panic!("This function never returns!");
 }
