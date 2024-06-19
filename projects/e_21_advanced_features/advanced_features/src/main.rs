@@ -1,3 +1,5 @@
+use hello_macro::HelloMacro;
+use hello_macro_derive::HelloMacro;
 use std::{fmt, ops::Add, slice};
 
 fn main() {
@@ -101,6 +103,12 @@ fn main() {
     let answer = f(5);
 
     println!("The answer is: {}", answer);
+
+    // Macros
+    let v = vec![1, 2, 3];
+    println!("{:?}", v);
+
+    Pancakes::hello_macro();
 
     // The never type that never returns
     bar();
@@ -283,3 +291,23 @@ fn bar() -> ! {
 fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
     Box::new(|x| x + 1)
 }
+
+// Macros
+#[macro_export]
+macro_rules! vec {
+    // The $() syntax is used to indicate that the pattern expects an argument
+    // The * syntax is used to indicate that the pattern expects zero or more arguments
+    ( $( $x:expr ),* ) => {
+        {
+            let mut temp_vec = Vec::new();
+            $(
+                temp_vec.push($x);
+            )*
+            temp_vec
+        }
+    };
+}
+
+// Custom derive
+#[derive(HelloMacro)]
+struct Pancakes;

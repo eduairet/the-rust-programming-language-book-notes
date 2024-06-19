@@ -419,3 +419,90 @@
   - The `impl Trait` syntax is used to return a type that implements a trait, in this case the `Fn` trait.
 
 ## Macros
+
+- Macros are a way to write code that writes other code (metaprogramming), they are a way to extend Rust's syntax.
+- Macros are a family of features in Rust: declarative macros with `macro_rules!` and three kinds of procedural macros:
+
+  - Custom `#[derive]` macros that specify code added with the `derive` attribute.
+  - Attribute-like macros that define custom attributes usable on any item.
+  - Function-like macros that look like function calls but operate on the tokens specified as their argument.
+
+- Macros must be defined at the root level of the crate, they cannot be defined inside functions or other items.
+
+### Declarative Macros with macro_rules! for General Metaprogramming
+
+- This is the most common type of macro, it is used to define a pattern and the code that should be generated when the pattern is matched.
+
+  ```rust
+  #[macro_export] // This attribute makes the macro available to other crates
+  macro_rules! vec {
+      // The $() syntax is used to indicate that the pattern expects an argument
+      // The * syntax is used to indicate that the pattern expects zero or more arguments
+      ( $( $x:expr ),* ) => {
+          {
+              let mut temp_vec = Vec::new();
+              $(
+                  temp_vec.push($x);
+              )*
+              temp_vec
+          }
+      };
+  }
+  ```
+
+  - The `macro_rules!` keyword is used to define a macro.
+  - The `!` symbol is used to call the macro.
+  - The `()` symbol is used to define the macro pattern.
+
+### Procedural Macros for Generating Code from Attributes
+
+- Procedural macros are used to define custom derive, attribute, and function-like macros.
+
+  ```rust
+  use proc_macro::TokenStream;
+
+  #[some_attribute]
+  pub fn some_name(input: TokenStream) -> TokenStream {
+      // --snip--
+  }
+  ```
+
+  - The `proc_macro` crate is used to define procedural macros.
+  - The `TokenStream` type is used to represent the body of the macro.
+
+- Check the example in the [e_21_advanced_features/hello_macro](../projects/e_21_advanced_features/hello_macro/) project.
+
+### Attribute-like Macros
+
+- Attribute-like macros are used to define custom attributes that can be applied to any item, not just structs and enums.
+
+  ```rust
+  #[proc_macro_attribute]
+  pub fn route(
+      attr: TokenStream,
+      item: TokenStream // The item is the function that the attribute is applied to
+  ) -> TokenStream { /* --snip-- */ }
+
+  #[route(GET, "/")]
+  fn index() { /* --snip-- */ }
+  ```
+
+  - The `attr` parameter is used to define the attributes of the item.
+  - The `item` parameter is used to define the item that the attribute is applied to.
+
+### Function-like Macros
+
+- Function-like macros are used to define macros that look like function calls.
+
+  ```rust
+  #[proc_macro]
+  pub fn sql(input: TokenStream) -> TokenStream { /* --snip-- */ }
+
+  let sql = sql!(SELECT * FROM posts WHERE id=1);
+  ```
+
+  - The `input` parameter is used to define the input of the macro.
+
+## References
+
+- [The little book of Rust macros](https://veykril.github.io/tlborm/)
