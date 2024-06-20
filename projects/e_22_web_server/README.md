@@ -8,9 +8,7 @@ This project is only for learning purposes. It is not intended to be used in pro
   - `HTTP` is a high-level protocol that defines how web servers and clients communicate.
   - `TCP` is a low-level protocol that defines how data is sent between computers.
 
-## Web Server
-
-### Setting Up a Single Thread TCP Listener
+## Setting Up a Simple Web Server
 
 - Rust offers the `std::net` module to create a web server.
 - The `std::net` module provides the `TcpListener` type to listen for incoming TCP connections.
@@ -67,7 +65,7 @@ This project is only for learning purposes. It is not intended to be used in pro
 
 - The `incoming` method returns an iterator that yields a new `TcpStream` for each connection.
 
-### HTTP Requests/Responses
+## HTTP Requests/Responses
 
 - Every HTTP request has a request line, headers, and a body.
   - First line: `GET / HTTP/1.1` (method, URI [uniform resource identifier], and version).
@@ -80,3 +78,11 @@ This project is only for learning purposes. It is not intended to be used in pro
   - Status line: `HTTP/1.1 200 OK` (version, status code, and reason phrase).
   - Headers: Key-value pairs that provide additional information about the response.
   - Body: The body of the response, which is optional.
+
+## Handle concurrent requests
+
+- Thread Pool: A group of threads that are ready to handle incoming requests.
+  - Limiting the number of threads in the pool can prevent the server from crashing due to too many requests (denial of service attack).
+- Fork-join model: The main thread creates a pool of threads, and each thread handles a request.
+- Single-threaded asynchronous model: The main thread handles all requests asynchronously.
+- Multi-threaded asynchronous model: The main thread creates a pool of threads, and each thread handles requests asynchronously.
